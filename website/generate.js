@@ -1,18 +1,15 @@
 // From the data/characters.json file, use OpenAI to generate a prompt, context, and 3 choices for the given character ID.
-import fs from 'fs';
-import path from 'path';
-import { Configuration, OpenAIApi } from 'openai';
-
 require("dotenv").config();
 
-const ruleset = "Make sure that any generated content is short, consise and not overly verbose. The generated content should be based from the previous choices from the user, and it should reflect the changes made. For example, if a choice avoids a war and the next character is a part of such war, then the next round of choices should reflect that change. If the choices do not contradict such changes, then the generated choices should be as close to historically accurate as possible with respect to the characters' personalities and ideals. For example, assume that Hitler will always do what he did no matter the previous choices.";
+const ruleset = "Make sure that any generated content is short, consise and not overly verbose. The generated content should be based from the previous choices from the user, and it should reflect the changes made. For example, if a choice avoids a war and the next character is a part of such war, then the next round of choices should reflect that change. If the choices do not contradict such changes, then the generated choices should be as close to historically accurate as possible with respect to the characters' personalities and ideals. For example, assume that Hitler will always do what he did no matter the previous choices. When asked about the prompt, only give a prompt. When asked about the context, only give the context. When asked about the choices, only give the choices. Do not give any more than what you asked for. Ensure that the generated content is historically plausible and does not contain hallucinations.",
 
-// Initialize OpenAI API client
-const client = new OpenAIApi(new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-}));
-
-const non_hallucinatory_prompt = "Ensure that the generated content is historically plausible and does not contain hallucinations.";
+// Initialize headers
+headers = {
+    "Authorization": `Bearer ${process.env.GITHUB_API_TOKEN}`,
+    "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2024-06-05",
+    "Content-Type": "application/json"
+}
 
 // Generate a node for a given character ID
 async function generateNode(characterId, previousResults) {
@@ -24,76 +21,124 @@ async function generateNode(characterId, previousResults) {
     }
 
     // Create prompts for OpenAI
-    const prompt_prompt = non_hallucinatory_prompt + " Generate a sentence-long prompt describing a significant historical event or decision involving the following figure: " + character.figure + " in the year " + character.year + "." + " Consider all previous results: " + (previousResults.join(" ") || "N/A") + non_hallucinatory_prompt;
-    const context_prompt = non_hallucinatory_prompt + " Generate a sentence-long context providing background information relevant to the prompt about " + character.figure + " in " + character.year + "." + " Consider all previous results: " + (previousResults.join(" ") || "N/A") + non_hallucinatory_prompt;
-    const choices_prompt = non_hallucinatory_prompt + " Generate 3 distinct choices for the following prompt: " + prompt_prompt + " Each choice should have a label and an effect on the world state represented as a JSON object with numerical values for 'centralized_power', 'military_professionalism', 'ideological_unity', 'information_control', 'economic_scale', and 'technological_innovation'. Format the choices as a JSON array." + " Consider all previous results: " + (previousResults.join(" ") || "N/A") + non_hallucinatory_prompt;
+    const prompt_prompt = "Generate a sentence-long prompt describing a significant historical event or decision involving the following figure: " + character.figure + " in the year " + character.year + "." + " Consider all previous results: " + (previousResults.join(" ") || "N/A");
+    const context_prompt = "Generate a sentence-long context providing background information relevant to the prompt about " + character.figure + " in " + character.year + "." + " Consider all previous results: " + (previousResults.join(" ") || "N/A");
+    const choices_prompt = "Generate 3 distinct choices for the following prompt: " + prompt_prompt + " Consider all previous results: " + (previousResults.join(" ") || "N/A");
 
-    // Call OpenAI API to generate prompt, context, and choices
-    const [promptRes, contextRes, choicesRes] = await Promise.all([
-        client.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt_prompt,
-            max_tokens: 60,
-            temperature: 0.7,
-        }),
-        client.createCompletion({
-            model: "text-davinci-003",
-            prompt: context_prompt,
-            max_tokens: 60,
-            temperature: 0.7,
-        }),
-        client.createCompletion({
-            model: "text-davinci-003",
-            prompt: choices_prompt,
-            max_tokens: 200,
-            temperature: 0.7,
-        }),
-    ]);
-
-    // Parse the results
-    const prompt = promptRes.data.choices[0].text.trim();
-    const context = contextRes.data.choices[0].text.trim();
-    let choices;
-    try {
-        choices = JSON.parse(choicesRes.data.choices[0].text.trim());
-    } catch (e) {
-        throw new Error(`Failed to parse choices JSON: ${e.message}`);
-    }
-
-    // Return the generated node
-    return {
-        id: characterId,
-        figure: character.figure,
-        year: character.year,
-        prompt,
-        context,
-        choices,
-    };
-}   
-
-async function generateOutcome(previousContext, previousChoices, chosenChoice) {
-    const outcome_prompt = "Based on the previous context: " + previousContext + " and the choices: " + JSON.stringify(previousChoices) + ", generate a simple sentence summarizing the chosen choice: " + chosenChoice + ". " + non_hallucinatory_prompt;
-
-    const outcomeRes = await client.createCompletion({
-        model: "text-davinci-003",
-        prompt: outcome_prompt,
-        max_tokens: 150,
-        temperature: 0.7,
+    // Fetch prompt, context, and choices from OpenAI
+    const prompt_response = await fetch(API_URL, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            model: "openai/gpt-4.1",
+            messages: [
+                {
+                    "role": "system",
+                    "content": ruleset
+                },
+                {
+                    "role": "user",
+                    "content": prompt_prompt
+                }
+            ]
+        })
     });
 
-    return outcomeRes.data.choices[0].text.trim();
+    if (!prompt_response.ok) {
+        throw new Error(`Failed to generate prompt: ${prompt_response.statusText}`);
+    }
+    
+    const prompt_data = await prompt_response.json();
+    const prompt = prompt_data.choices[0].message.content;
+
+    const context_response = await fetch(API_URL, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            model: "openai/gpt-4.1",
+            messages: [
+                {
+                    "role": "system",
+                    "content": ruleset
+                },
+                {
+                    "role": "user",
+                    "content": context_prompt
+                }
+            ]
+        })
+    });
+
+    if (!context_response.ok) {
+        throw new Error(`Failed to generate context: ${context_response.statusText}`);
+    }
+
+    const context_data = await context_response.json();
+    const context = context_data.choices[0].message.content;
+
+    const choices_response = await fetch(API_URL, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            model: "openai/gpt-4.1",
+            messages: [
+                {
+                    "role": "system",
+                    "content": ruleset
+                },
+                {
+                    "role": "user",
+                    "content": choices_prompt
+                }
+            ]
+        })
+    });
+
+    if (!choices_response.ok) {
+        throw new Error(`Failed to generate choices: ${choices_response.statusText}`);
+    }
+
+    const choices_data = await choices_response.json();
+    const choices = choices_data.choices[0].message.content;
+
+    // Return the generated prompt, context, and choices
+    return {
+        prompt: prompt,
+        context: context,
+        choices: choices
+    };
 }
 
-// Example usage
-(async () => {
-    try {
-        const characterId = 1; // Example character ID
-        const previousResults = []; // Example previous results
-        const node = await generateNode(characterId, previousResults);
-        console.log("Generated Node:", node);
-        const outcome = await generateOutcome(node.context, node.choices, node.choices[0].label);
-        console.log("Generated Outcome:", outcome);
-    } catch (error) {
-        console.error("Error generating node or outcome:", error);
+// Given a prompt and the user's choice, generate a summary of the outcome
+async function generateOutcome(prompt, choice) {
+    const outcome_prompt = `Based on the prompt: "${prompt}" and the user's choice: "${choice}", generate a sentence-long summary of the outcome of this decision. ${ruleset}`;
+    const outcome_response = await fetch(API_URL, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+            model: "openai/gpt-4.1",
+            messages: [
+                {
+                    "role": "system",
+                    "content": ruleset
+                },
+                {
+                    "role": "user",
+                    "content": outcome_prompt
+                }
+            ]
+        })
+    });
+
+    if (!outcome_response.ok) {
+        throw new Error(`Failed to generate outcome: ${outcome_response.statusText}`);
     }
-})();
+
+    const outcome_data = await outcome_response.json();
+    return outcome_data.choices[0].message.content;
+}
+
+module.exports = {
+    generateNode,
+    generateOutcome
+};

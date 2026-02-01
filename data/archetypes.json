@@ -1,0 +1,77 @@
+{
+  "archetypes": [
+    {
+      "id": "war_campaign",
+      "weight": 1.0,
+      "requires": {
+        "military_capacity": 2
+      },
+      "conflicts_with": ["global_treaty"],
+      "prompt_templates": [
+        "{leader} considers a decisive campaign against {target}."
+      ],
+      "choice_templates": [
+        {
+          "label": "Launch a rapid offensive",
+          "effects": {
+            "military_capacity": -2,
+            "legitimacy": 1
+          },
+          "risk": 0.4
+        },
+        {
+          "label": "Consolidate supply lines and allies",
+          "effects": {
+            "economic_scale": 1
+          },
+          "risk": 0.2
+        },
+        {
+          "label": "Seek negotiated settlement",
+          "effects": {
+            "legitimacy": -1,
+            "ideological_unity": 1
+          },
+          "risk": 0.1
+        }
+      ],
+      "time_advance": {
+        "min_years": 1,
+        "max_years": 3
+      }
+    },
+
+    {
+      "id": "reform",
+      "weight": 0.8,
+      "requires": {
+        "legitimacy": -1
+      },
+      "prompt_templates": [
+        "Internal pressures force {leader} to consider reform."
+      ],
+      "choice_templates": [
+        {
+          "label": "Implement gradual reforms",
+          "effects": {
+            "legitimacy": 1,
+            "centralization": 1
+          },
+          "risk": 0.15
+        },
+        {
+          "label": "Suppress dissent",
+          "effects": {
+            "legitimacy": -2,
+            "information_control": 1
+          },
+          "risk": 0.3
+        }
+      ],
+      "time_advance": {
+        "min_years": 5,
+        "max_years": 20
+      }
+    }
+  ]
+}

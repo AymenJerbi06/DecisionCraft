@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "figure": "Alexander the Great",
+    "year": -334
+  },
+  {
+    "id": 2,
+    "figure": "Hannibal Barca",
+    "year": -216
+  },
+  {
+    "id": 3,
+    "figure": "Julius Caesar",
+    "year": -49
+  },
+  {
+    "id": 4,
+    "figure": "Cleopatra VII",
+    "year": -48
+  },
+    {
+    "id": 5,
+    "figure": "Titus",
+    "year": 70
+  },
+  {
+    "id": 6,
+    "figure": "Constantine the Great",
+    "year": 312
+  },
+    {
+    "id": 7,
+    "figure": "Charlemagne",
+    "year": 800
+  },
+  {
+    "id": 8,
+    "figure": "Saladin",
+    "year": 1187
+  },
+  {
+    "id": 9,
+    "figure": "Genghis Khan",
+    "year": 1206
+  },
+  {
+    "id": 10,
+    "figure": "Christopher Columbus",
+    "year": 1492
+  },
+    {
+    "id": 11,
+    "figure": "Martin Luther",
+    "year": 1517
+  },
+  {
+    "id": 12,
+    "figure": "Queen Elizabeth I",
+    "year": 1588
+  },
+    {
+    "id": 13,
+    "figure": "George Washington",
+    "year": 1789
+  },
+    {
+    "id": 14,
+    "figure": "Maximilien Robespierre",
+    "year": 1793
+  },
+  {
+    "id": 15,
+    "figure": "Napoleon Bonaparte",
+    "year": 1804
+  },
+  {
+    "id": 16,
+    "figure": "Otto von Bismarck",
+    "year": 1871
+  },
+  {
+    "id": 17,
+    "figure": "Abraham Lincoln",
+    "year": 1863
+  },
+  {
+    "id": 18,
+    "figure": "Karl Marx and Vladimir Lenin",
+    "year": 1917
+  },
+  {
+    "id": 19,
+    "figure": "Adolf Hitler and Neville Chamberlain",
+    "year": 1938
+  },
+  {
+    "id": 20,
+    "figure": "Winston Churchill",
+    "year": 1940
+  },
+  {
+    "id": 21,
+    "figure": "Franklin D. Roosevelt",
+    "year": 1941
+  },
+  {
+    "id": 22,
+    "figure": "J. Robert Oppenheimer",
+    "year": 1945
+  },
+  {
+    "id": 23,
+    "figure": "John F. Kennedy",
+    "year": 1962
+  },
+  {
+    "id": 24,
+    "figure": "Lyndon B. Johnson",
+    "year": 1965
+  },
+  {
+    "id": 25,
+    "figure": "Mikhail Gorbachev",
+    "year": 1989
+  },
+  {
+    "id": 26,
+    "figure": "George W. Bush",
+    "year": 2001
+  },
+    {
+    "id": 27,
+    "figure": "Vladimir Putin",
+    "year": 2014
+  },
+  {
+    "id": 28,
+    "figure": "Angela Merkel",
+    "year": 2015
+  },
+  {
+    "id": 29,
+    "figure": "David Cameron",
+    "year": 2016
+  },
+  {
+    "id": 30,
+    "figure": "Donald Trump",
+    "year": 2017
+  },
+  {
+    "id": 31,
+    "figure": "Xi Jinping",
+    "year": 2018
+  },
+  {
+    "id": 32,
+    "figure": "Sam Altman",
+    "year": 2023
+  }
+]

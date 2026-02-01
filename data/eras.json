@@ -1,0 +1,56 @@
+{
+  "eras": [
+    {
+      "id": "antiquity",
+      "start_year": -500,
+      "end_year": 500,
+      "allowed_archetypes": [
+        "war_campaign",
+        "alliance",
+        "reform",
+        "succession",
+        "trade"
+      ],
+      "tech_cap": 2
+    },
+    {
+      "id": "medieval",
+      "start_year": 500,
+      "end_year": 1500,
+      "allowed_archetypes": [
+        "war_campaign",
+        "religious_policy",
+        "succession",
+        "trade",
+        "law_codification"
+      ],
+      "tech_cap": 4
+    },
+    {
+      "id": "modern",
+      "start_year": 1500,
+      "end_year": 1900,
+      "allowed_archetypes": [
+        "industrialization",
+        "war_total",
+        "reform",
+        "colonization",
+        "finance"
+      ],
+      "tech_cap": 7
+    },
+    {
+      "id": "contemporary",
+      "start_year": 1900,
+      "end_year": 2027,
+      "allowed_archetypes": [
+        "war_total",
+        "surveillance",
+        "economic_policy",
+        "ai_governance",
+        "global_treaty"
+      ],
+      "tech_cap": 10
+    }
+  ]
+}

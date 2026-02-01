@@ -1,0 +1,20 @@
+{
+  "targets": [
+    {
+      "id": "rival_power",
+      "label": "a rival regional power"
+    },
+    {
+      "id": "internal_elites",
+      "label": "domestic elites"
+    },
+    {
+      "id": "religious_groups",
+      "label": "religious authorities"
+    },
+    {
+      "id": "trade_partners",
+      "label": "major trade partners"
+    }
+  ]
+}

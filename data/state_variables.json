@@ -1,0 +1,46 @@
+{
+  "variables": [
+    {
+      "id": "centralization",
+      "min": -5,
+      "max": 5,
+      "description": "Degree of centralized authority"
+    },
+    {
+      "id": "legitimacy",
+      "min": -5,
+      "max": 5,
+      "description": "Public acceptance of leadership"
+    },
+    {
+      "id": "military_capacity",
+      "min": 0,
+      "max": 10,
+      "description": "Ability to wage war"
+    },
+    {
+      "id": "economic_scale",
+      "min": -5,
+      "max": 5,
+      "description": "Productive and trade capacity"
+    },
+    {
+      "id": "ideological_unity",
+      "min": -5,
+      "max": 5,
+      "description": "Degree of shared belief system"
+    },
+    {
+      "id": "information_control",
+      "min": -5,
+      "max": 5,
+      "description": "Control over narratives and knowledge"
+    },
+    {
+      "id": "tech_level",
+      "min": 0,
+      "max": 10,
+      "description": "Technological sophistication"
+    }
+  ]
+}

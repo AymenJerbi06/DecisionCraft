@@ -22,46 +22,37 @@ function renderState() {
     ui.worldstate.textContent = JSON.stringify(getState(), null, 2);
 }
 
-function renderNode(node) {
-    ui.prompt.textContent = node.prompt ?? "";
-    ui.title.textContent = leader;
-    ui.subtitle.textContent = `Year: ${year}`;
-    ui.explanation.textContent = JSON.stringify(node.explanation, null, 2) ?? "";
+function renderNode(payload) {
+    runId = payload.run_id;
+    year = payload.year;
+    leader = payload.leader;
 
+    ui.title.textContent = leader?.name ?? "Unknown Leader";
+    ui.subtitle.textContent = `Year: ${year}`;
+    ui.prompt.textContent = payload.node?.prompt ?? "No prompt available.";
+
+    //Context Bullets
     ui.context.innerHTML = "";
-    (node.context ?? []).forEach((line) => {
+    (payload.node?.context ?? []).foreach ((line) => {
         const li = document.createElement("li");
-        li.textContent = line;
+        li.textContent = li;
         ui.context.appendChild(li);
     });
 
+    //Choice Buttons
     ui.choices.innerHTML = "";
-    (node.choices ?? []).forEach((choice) => {
-        const button = document.createElement("button");
-        button.className = "choice-button";
-        button.textContent = choice.label;
-
-        button.addEventListener("click", async () => {
-            applyEffects(choice.effects);
-            history.push(choice.id);
-            renderState();
-
-            ui.meta.textContent = `Loading node ${choice.next}...`;
-            const res = await fetchNext({
-                year,
-                leader,
-                state: snapshotState(),
-                history,    
-            });
-            year = res.year;
-            leader = res.leader;
-            renderNode(res.node);
-            ui.meta.textContent = "Ready";
-        });
-        ui.choices.appendChild(button);
+    (payload.node?.choices ?? []).forEach((choice) => {
+        const btn = document.createElement("button");
+        btn.className = "choice-button";
+        btn.textContent = choice.label ?? choice.id;
+        
+        btn.addEventListener("click",  () =>  onChoose(choice));
+        ui.choices.appendChild(btn);
     });
 
     renderState();
+    ui.meta.textContent = `Run: ${runId} `;
+
 }
 
 ui.reset.addEventListener("click", async() => {

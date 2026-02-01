@@ -1,0 +1,17 @@
+{
+  "figure": "Hannibal Barca",
+  "year": -216,
+  "prompt": "Hannibal Barca considers a decisive campaign against a rival regional power.",
+  "choices": [
+    {
+      "id": "launch_offensive",
+      "label": "Launch a rapid offensive",
+      "effects": { "military_capacity": -2, "legitimacy": 1 }
+    },
+    {
+      "id": "consolidate_allies",
+      "label": "Consolidate supply lines and allies",
+      "effects": { "economic_scale": 1 }
+    }
+  ]
+}
