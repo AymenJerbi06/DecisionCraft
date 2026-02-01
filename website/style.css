@@ -14,12 +14,24 @@ body {
     margin: 0;
 }
 
-.container {
+#main-container {
     background-color: white;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     text-align: center;
     width: 500px;
-    opacity: 0.8;
+    opacity: 0.7;
+}
+
+#start-button {
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 10px 50px;
+    opacity: 1;
+    transition: background-color 0.3s ease;
 }
