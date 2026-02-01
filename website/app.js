@@ -77,21 +77,22 @@ async function onChoose(choice) {
     }
 }
 
+async function startNewRun() {
+    try{
+        ui.meta.textContent = `Starting new run...`;
+        resetState();
+        history = [];
 
-ui.reset.addEventListener("click", async() => {
-    resetState();
-    history = [];
+        const rootPayload = await fetchRoot();
+        renderNode(rootPayload);
+    } catch (err) {
+        console.error("Error starting new run:", err);
+        ui.meta.textContent = `Error starting new run: ${err.message}`;
+    }
+}
 
-    const res = await fetchRoot();
-    year = res.year;
-    leader = res.leader;
-    renderNode(res.node);
-});
 
-(async function init() {
-    const res = await fetchRoot();
-    year = res.year;
-    leader = res.leader;
-    renderNode(res.node);
-})();
+ui.reset.addEventListener("click", startNewRun);
 
+// Initialize the app
+startNewRun();
